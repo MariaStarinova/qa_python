@@ -1,24 +1,80 @@
+import pytest
+
 from main import BooksCollector
 
-# класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
-# обязательно указывать префикс Test
 class TestBooksCollector:
 
-    # пример теста:
-    # обязательно указывать префикс test_
-    # дальше идет название метода, который тестируем add_new_book_
-    # затем, что тестируем add_two_books - добавление двух книг
-    def test_add_new_book_add_two_books(self):
-        # создаем экземпляр (объект) класса BooksCollector
-        collector = BooksCollector()
+    @pytest.fixture(scope='function')
+    def books_collector(self):
+        return BooksCollector()
 
-        # добавляем две книги
-        collector.add_new_book('Гордость и предубеждение и зомби')
-        collector.add_new_book('Что делать, если ваш кот хочет вас убить')
+    name = 'Что делать, если ваш кот хочет вас убить'
+    other_name = 'Синдром петрушки'
 
-        # проверяем, что добавилось именно две
-        # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
-        assert len(collector.get_books_rating()) == 2
+    def test_add_new_book_and_default_rating(self, books_collector):
+        books_collector.add_new_book(self.name)
 
-    # напиши свои тесты ниже
-    # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
+        assert books_collector.favorites == []
+        assert books_collector.books_rating == {self.name: 1}
+
+
+    def test_add_new_book_not_add_twice(self, books_collector):
+        books_collector.add_new_book(self.name)
+        books_collector.add_new_book(self.name)
+
+        assert books_collector.favorites == []
+        assert books_collector.books_rating == {self.name: 1}
+
+
+    def test_add_book_in_favorites(self, books_collector):
+        books_collector.add_new_book(self.name)
+        books_collector.add_book_in_favorites(self.name)
+
+        assert self.name in books_collector.favorites
+
+
+    def test_get_books_rating_book_not_list_not_rating(self, books_collector):
+        name = 'Гарри Поттер и философский камень'
+        rating = 10
+
+        assert books_collector.books_rating.get(name) is None
+
+
+    def test_get_books_rating_not_add_less_one(self, books_collector):
+        books_collector.add_new_book(self.name)
+        books_collector.set_book_rating(self.name, 0)
+
+        assert books_collector.books_rating[self.name] == 1
+
+
+    def test_get_books_rating_not_add_more_ten(self, books_collector):
+        books_collector.add_new_book(self.name)
+        books_collector.set_book_rating(self.name, 15)
+
+        assert books_collector.books_rating[self.name] == 1
+
+
+    def test_get_books_rating_not_add_book_no_rating(self, books_collector):
+        books_collector.add_new_book(self.name)
+        rating = books_collector.get_book_rating(self.other_name)
+
+        assert rating is None
+
+
+    def add_book_in_favorites(self, books_collector):
+        books_collector.add_book_in_favorites(self.name)
+
+        assert books_collector.favorites == []
+        assert books_collector.books_rating == {}
+
+
+    def delete_book_from_favorite(self, books_collector):
+        books_collector.add_new_book(self.name)
+        books_collector.add_book_in_favorites(self.name)
+        books_collector.delete_book_from_favorites(self.name)
+
+        assert books_collector.favorites == []
+        assert books_collector.books_rating == {self.name: 1}
+
+
+
