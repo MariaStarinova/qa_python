@@ -12,8 +12,10 @@ test_get_books_rating_not_add_less_one -- Нельзя выставить рей
 
 test_get_books_rating_not_add_more_ten -- Нельзя выставить рейтинг больше 10.
 
-add_book_in_favorites_not_add_book_not_in_books_rating --Нельзя добавить книгу в избранное, если её нет в словаре books_rating.
+test_add_book_in_favorites_not_add_book_not_in_books_rating --Нельзя добавить книгу в избранное, если её нет в словаре books_rating.
 
-add_book_in_favorites -- Добавление книги в избранное.
+test_add_book_in_favorites -- Добавление книги в избранное.
 
-delete_book_from_favorite -- Проверка удаления книги из избранного.
+test_delete_book_from_favorite -- Проверка удаления книги из избранного.
+
+

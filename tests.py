@@ -61,21 +61,20 @@ class TestBooksCollector:
         assert rating is None
 
 
-    def add_book_in_favorites(self, books_collector):
+    def test_add_book_in_favorites(self, books_collector):
         books_collector.add_book_in_favorites(self.name)
 
         assert books_collector.favorites == []
         assert books_collector.books_rating == {}
 
 
-    def delete_book_from_favorite(self, books_collector):
+    def test_delete_book_from_favorite(self, books_collector):
         books_collector.add_new_book(self.name)
         books_collector.add_book_in_favorites(self.name)
         books_collector.delete_book_from_favorites(self.name)
 
         assert books_collector.favorites == []
         assert books_collector.books_rating == {self.name: 1}
-
 
 
 
