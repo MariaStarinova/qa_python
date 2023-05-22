@@ -37,10 +37,9 @@ class TestBooksCollector:
         assert books_collector.get_book_rating(name) == 1
 
     def test_get_books_rating_not_add_book_no_rating(self, books_collector):
-        books_collector.add_new_book(name)
-        books_collector.set_book_rating(other_name, 3)
+        books_collector.set_book_rating(name, 3)
 
-        assert books_collector.get_book_rating(name) == 1
+        assert books_collector.get_book_rating(name) is None
 
 
     def test_add_book_in_favorites(self, books_collector):
