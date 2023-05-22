@@ -15,7 +15,7 @@ class TestBooksCollector:
         books_collector.add_new_book(name)
         books_collector.add_new_book(name)
 
-        assert books_collector.get_book_rating(name) == 1, 'Error:not add book twice'
+        assert len(books_collector.get_books_rating()) == 1, 'Error:not add book twice'
 
     def test_get_books_rating_book_not_list_not_rating(self, books_collector):
         name = 'Гарри Поттер и философский камень'
@@ -36,12 +36,11 @@ class TestBooksCollector:
 
         assert books_collector.get_book_rating(name) == 1
 
-
     def test_get_books_rating_not_add_book_no_rating(self, books_collector):
         books_collector.add_new_book(name)
-        rating = books_collector.get_book_rating(other_name)
+        books_collector.set_book_rating(other_name, 3)
 
-        assert rating is None
+        assert books_collector.get_book_rating(name) == 1
 
 
     def test_add_book_in_favorites(self, books_collector):
